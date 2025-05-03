@@ -1,28 +1,69 @@
 package gpfile
 
 import (
-	"errors"
 	"os"
-	"path/filepath"
+	"strings"
 
 	"gopkg.in/yaml.v3"
+
+	"github.com/mitchellh/mapstructure"
 )
 
-func Unmarshal(path string, o interface{}) error {
+func Unmarshal(path string, output interface{}) error {
 
-	switch filepath.Ext(path) {
-	case ".yaml", ".yml":
-		f, err := os.ReadFile(path)
+	paths := []string{path}
+	if strings.Contains(path, ",") {
+		paths = strings.Split(path, ",")
+	} else if strings.Contains(path, ";") {
+		paths = strings.Split(path, ";")
+	}
+
+	merged := make(map[string]interface{})
+
+	for _, path := range paths {
+		fileContent, err := os.ReadFile(path)
 		if err != nil {
 			return err
 		}
 
-		if err := yaml.Unmarshal(f, o); err != nil {
+		var current map[string]interface{}
+		if err := yaml.Unmarshal(fileContent, &current); err != nil {
 			return err
 		}
-	default:
-		return errors.New("error on check extension of file " + path)
+
+		mergeMaps(merged, current)
+	}
+
+	decoder, err := mapstructure.NewDecoder(
+		&mapstructure.DecoderConfig{
+			Result:  output,
+			TagName: "yaml",
+		},
+	)
+	if err != nil {
+		return err
+	}
+
+	if err := decoder.Decode(merged); err != nil {
+		return err
 	}
 
 	return nil
+}
+
+func mergeMaps(dest map[string]interface{}, src map[string]interface{}) {
+
+	for key, srcVal := range src {
+		if destVal, ok := dest[key]; ok {
+			destMap, destIsMap := destVal.(map[string]interface{})
+			srcMap, srcIsMap := srcVal.(map[string]interface{})
+
+			if destIsMap && srcIsMap {
+				mergeMaps(destMap, srcMap)
+				continue
+			}
+		}
+
+		dest[key] = srcVal
+	}
 }
