@@ -1,4 +1,4 @@
-package vppercentage
+package gppercentage
 
 import (
 	"errors"

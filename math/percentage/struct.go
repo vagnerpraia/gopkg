@@ -1,4 +1,4 @@
-package vppercentage
+package gppercentage
 
 type Percentage struct {
 }
