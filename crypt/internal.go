@@ -38,7 +38,7 @@ func process(in interface{}, hasher *hash.Hash) error {
 
 	fieldValue := reflect.Indirect(reflect.ValueOf(in))
 	fieldKind := fieldValue.Type().Kind()
-	if !fieldValue.IsValid() || fieldValue.IsZero() {
+	if !fieldValue.IsValid() {
 		return nil
 	}
 
@@ -80,7 +80,7 @@ func process(in interface{}, hasher *hash.Hash) error {
 			fieldTag := fieldValue.Type().Field(i).Tag.Get("hash")
 			fv := fieldValue.Field(i)
 
-			if fv.IsZero() || !fv.IsValid() || fieldTag == "ignore" {
+			if !fv.IsValid() || fieldTag == "ignore" {
 				continue
 			}
 
@@ -109,8 +109,7 @@ func process(in interface{}, hasher *hash.Hash) error {
 
 		sort.Strings(hashesAr)
 		for _, h := range hashesAr {
-			err := process(h, hasher)
-			if err != nil {
+			if err := process(h, hasher); err != nil {
 				return err
 			}
 		}
