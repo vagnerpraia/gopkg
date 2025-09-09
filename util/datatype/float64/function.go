@@ -2,6 +2,7 @@ package gpfloat64
 
 import (
 	"errors"
+	"math"
 	"regexp"
 	"strconv"
 	"strings"
@@ -67,11 +68,6 @@ func Normalize(flt float64, normalizer float64, prec int) (float64, error) {
 	return flt, nil
 }
 
-func ReverseSign(flt float64) float64 {
-
-	return flt * -1
-}
-
 func Positive(flt float64) float64 {
 
 	if flt < 0 {
@@ -101,4 +97,16 @@ func Module(flt float64) float64 {
 
 func IsIntegral(flt float64) bool {
 	return flt == float64(int(flt))
+}
+
+func ReverseSign(flt float64) float64 {
+
+	return flt * -1
+}
+
+func Round(flt float64, prec int) float64 {
+
+	factor := math.Pow(10, float64(prec))
+
+	return math.Round(flt*factor) / factor
 }

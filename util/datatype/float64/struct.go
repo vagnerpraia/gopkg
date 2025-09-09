@@ -57,11 +57,6 @@ func (f *Float64) Normalize(flt float64, normalizer float64) (float64, error) {
 	return Normalize(flt, normalizer, f.prec)
 }
 
-func (f *Float64) ReverseSign(flt float64) float64 {
-
-	return ReverseSign(flt)
-}
-
 func (f *Float64) Positive(flt float64) float64 {
 
 	return Positive(flt)
@@ -80,4 +75,14 @@ func (f *Float64) Module(flt float64) float64 {
 func (f *Float64) IsIntegral(flt float64) bool {
 
 	return IsIntegral(flt)
+}
+
+func (f *Float64) ReverseSign(flt float64) float64 {
+
+	return ReverseSign(flt)
+}
+
+func (f *Float64) Round(flt float64, prec int) float64 {
+
+	return Round(flt, prec)
 }
