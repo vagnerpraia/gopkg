@@ -7,9 +7,9 @@ import (
 	"time"
 )
 
-func FromDuration(timeFrame string, layout string) (time.Duration, error) {
+func FromDuration(timeFrame string) (time.Duration, error) {
 
-	re := regexp.MustCompile(layout)
+	re := regexp.MustCompile(`^(\d+)(ms|[smhd])$`)
 	matches := re.FindStringSubmatch(timeFrame)
 
 	if matches == nil {
@@ -22,6 +22,9 @@ func FromDuration(timeFrame string, layout string) (time.Duration, error) {
 	}
 
 	switch matches[2] {
+	case "ms":
+		return time.Duration(num) * time.Millisecond, nil
+
 	case "s":
 		return time.Duration(num) * time.Second, nil
 

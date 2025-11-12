@@ -2,25 +2,19 @@ package gptimeframe
 
 import "time"
 
-type TimeFrame struct {
-	layout string
-}
+type TimeFrame struct{}
 
 func NewTimeFrame(layout string) *TimeFrame {
 
-	return &TimeFrame{
-		layout: layout,
-	}
+	return &TimeFrame{}
 }
 
 func DefaultTimeFrame() *TimeFrame {
 
-	return &TimeFrame{
-		layout: `^(\d+)([smhd])$`,
-	}
+	return &TimeFrame{}
 }
 
 func (t *TimeFrame) FromDuration(timeFrame string) (time.Duration, error) {
 
-	return FromDuration(timeFrame, t.layout)
+	return FromDuration(timeFrame)
 }
