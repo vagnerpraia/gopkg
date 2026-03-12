@@ -24,10 +24,13 @@ type MongoDBOptions struct {
 }
 
 type ClientOptions struct {
-	URI         string `yaml:"uri"`
-	DB          string `yaml:"db"`
-	MaxPoolSize uint64 `yaml:"maxPoolSize"`
-	MinPoolSize uint64 `yaml:"minPoolSize"`
+	URI                    string `yaml:"uri"`
+	DB                     string `yaml:"db"`
+	ConnectTimeout         int    `yaml:"connectTimeout"`
+	MaxConnIdleTime        int    `yaml:"maxConnIdleTime"`
+	MaxPoolSize            uint64 `yaml:"maxPoolSize"`
+	MinPoolSize            uint64 `yaml:"minPoolSize"`
+	ServerSelectionTimeout int    `yaml:"serverSelectionTimeout"`
 }
 
 func NewClientOptions(filePath string) (*ClientOptions, error) {

@@ -3,6 +3,7 @@ package gpmongodb
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -12,8 +13,11 @@ func NewClient(ctx context.Context, clientOptions *ClientOptions) (*mongo.Client
 
 	opts := options.Client().
 		ApplyURI(clientOptions.URI).
+		SetConnectTimeout(time.Duration(clientOptions.ConnectTimeout) * time.Second).
+		SetMaxConnIdleTime(time.Duration(clientOptions.MaxConnIdleTime) * time.Second).
 		SetMaxPoolSize(clientOptions.MaxPoolSize).
-		SetMinPoolSize(clientOptions.MaxPoolSize)
+		SetMinPoolSize(clientOptions.MaxPoolSize).
+		SetServerSelectionTimeout(time.Duration(clientOptions.ServerSelectionTimeout) * time.Second)
 
 	client, err := mongo.Connect(ctx, opts)
 	if err != nil {
