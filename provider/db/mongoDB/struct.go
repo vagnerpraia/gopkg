@@ -10,7 +10,10 @@ import (
 
 func NewClient(ctx context.Context, clientOptions *ClientOptions) (*mongo.Client, *mongo.Database, error) {
 
-	opts := options.Client().ApplyURI(clientOptions.URI)
+	opts := options.Client().
+		ApplyURI(clientOptions.URI).
+		SetMaxPoolSize(clientOptions.MaxPoolSize).
+		SetMinPoolSize(clientOptions.MaxPoolSize)
 
 	client, err := mongo.Connect(ctx, opts)
 	if err != nil {

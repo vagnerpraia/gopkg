@@ -24,8 +24,10 @@ type MongoDBOptions struct {
 }
 
 type ClientOptions struct {
-	URI string `yaml:"uri"`
-	DB  string `yaml:"db"`
+	URI         string `yaml:"uri"`
+	DB          string `yaml:"db"`
+	MaxPoolSize uint64 `yaml:"maxPoolSize"`
+	MinPoolSize uint64 `yaml:"minPoolSize"`
 }
 
 func NewClientOptions(filePath string) (*ClientOptions, error) {
