@@ -4,9 +4,19 @@ import (
 	"time"
 )
 
-func ToStringDefault(in time.Time) string {
+func ToDateTimeStringDefault(in time.Time) string {
 
-	return in.Format(LAYOUT_DEFAULT)
+	return in.Format(LAYOUT_DATETIME_DEFAULT)
+}
+
+func ToDateStringDefault(in time.Time) string {
+
+	return in.Format(LAYOUT_DATE_DEFAULT)
+}
+
+func ToTimeStringDefault(in time.Time) string {
+
+	return in.Format(LAYOUT_TIME_DEFAULT)
 }
 
 func ToString(in time.Time, layout string) string {
