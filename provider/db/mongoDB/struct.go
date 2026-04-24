@@ -46,7 +46,7 @@ func NewMongoDB(ctx context.Context, clientOptions *ClientOptions) (*MongoDB, er
 
 func (that *MongoDB) SetCollection(collection string) {
 
-	that.Database.Collection(collection)
+	that.Collection = that.Database.Collection(collection)
 }
 
 func (that *MongoDB) Disconnect(ctx context.Context) error {
