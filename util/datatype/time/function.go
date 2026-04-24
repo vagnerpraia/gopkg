@@ -4,17 +4,17 @@ import (
 	"time"
 )
 
-func ToDateTimeStringDefault(in time.Time) string {
+func ToStringDateTimeDefault(in time.Time) string {
 
 	return in.Format(LAYOUT_DATETIME_DEFAULT)
 }
 
-func ToDateStringDefault(in time.Time) string {
+func ToStringDateDefault(in time.Time) string {
 
 	return in.Format(LAYOUT_DATE_DEFAULT)
 }
 
-func ToTimeStringDefault(in time.Time) string {
+func ToStringTimeDefault(in time.Time) string {
 
 	return in.Format(LAYOUT_TIME_DEFAULT)
 }
@@ -22,6 +22,36 @@ func ToTimeStringDefault(in time.Time) string {
 func ToString(in time.Time, layout string) string {
 
 	return in.Format(layout)
+}
+
+func FromStringDateTimeDefault(str string) (time.Time, error) {
+
+	out, err := time.Parse(LAYOUT_DATETIME_DEFAULT, str)
+	if err != nil {
+		return out, err
+	}
+
+	return out, err
+}
+
+func FromStringDateDefault(str string) (time.Time, error) {
+
+	out, err := time.Parse(LAYOUT_DATE_DEFAULT, str)
+	if err != nil {
+		return out, err
+	}
+
+	return out, err
+}
+
+func FromStringTimeDefault(str string) (time.Time, error) {
+
+	out, err := time.Parse(LAYOUT_TIME_DEFAULT, str)
+	if err != nil {
+		return out, err
+	}
+
+	return out, err
 }
 
 func FromString(str string, layout string) (time.Time, error) {

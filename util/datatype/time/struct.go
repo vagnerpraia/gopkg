@@ -17,24 +17,39 @@ func NewTime(location string, layout string) *Time {
 	}
 }
 
-func (util *Time) ToDateTimeStringDefault(in time.Time) string {
+func (util *Time) ToStringDateTimeDefault(in time.Time) string {
 
-	return ToDateTimeStringDefault(in)
+	return ToStringDateTimeDefault(in)
 }
 
-func (util *Time) ToDateStringDefault(in time.Time) string {
+func (util *Time) ToStringDateDefault(in time.Time) string {
 
-	return ToDateStringDefault(in)
+	return ToStringDateDefault(in)
 }
 
-func (util *Time) ToTimeStringDefault(in time.Time) string {
+func (util *Time) ToStringTimeDefault(in time.Time) string {
 
-	return ToTimeStringDefault(in)
+	return ToStringTimeDefault(in)
 }
 
 func (util *Time) ToString(in time.Time) string {
 
 	return ToString(in, util.layout)
+}
+
+func (util *Time) FromStringDateTimeDefault(str string) (time.Time, error) {
+
+	return FromStringDateTimeDefault(str)
+}
+
+func (util *Time) FromStringDateDefault(str string) (time.Time, error) {
+
+	return FromStringDateDefault(str)
+}
+
+func (util *Time) FromStringTimeDefault(str string) (time.Time, error) {
+
+	return FromStringTimeDefault(str)
 }
 
 func (util *Time) FromString(str string) (time.Time, error) {
