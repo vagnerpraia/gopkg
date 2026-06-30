@@ -6,10 +6,15 @@ import (
 	"os"
 )
 
-func NewLogger(ctx context.Context, loggingOptions *LoggingOptions) (*slog.Logger, error) {
+type Logger struct {
+	Logger  *slog.Logger
+	Options *LoggingOptions
+}
+
+func NewLogger(ctx context.Context, options *LoggingOptions) (*Logger, error) {
 
 	file, err := os.OpenFile(
-		loggingOptions.PathFile,
+		options.PathFile,
 		os.O_CREATE|os.O_APPEND|os.O_WRONLY,
 		0644,
 	)
@@ -23,5 +28,8 @@ func NewLogger(ctx context.Context, loggingOptions *LoggingOptions) (*slog.Logge
 
 	logger := slog.New(handler)
 
-	return logger, nil
+	return &Logger{
+		Logger:  logger,
+		Options: options,
+	}, nil
 }
