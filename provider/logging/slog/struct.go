@@ -2,6 +2,7 @@ package gpslog
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"log/slog"
 	"os"
@@ -44,5 +45,18 @@ func (that *Logging) Info(msg string) {
 
 	if that.options.WriteFile {
 		that.logger.Info(msg)
+	}
+}
+
+func (that *Logging) Error(msg string, err error) {
+
+	formatted := fmt.Sprintf("%s: %v\n", msg, err)
+
+	if that.options.Print {
+		log.Println(formatted)
+	}
+
+	if that.options.WriteFile {
+		that.logger.Error(formatted)
 	}
 }
