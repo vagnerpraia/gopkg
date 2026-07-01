@@ -4,6 +4,7 @@ import (
 	"context"
 	"log/slog"
 	"os"
+	"path/filepath"
 )
 
 type Logging struct {
@@ -13,7 +14,11 @@ type Logging struct {
 
 func NewLogging(ctx context.Context, options *LoggingOptions) (*Logging, error) {
 
-	file, err := os.OpenFile(options.PathFile, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
+	if err := os.MkdirAll(filepath.Dir(options.PathFile), 0755); err != nil {
+		return nil, err
+	}
+
+	file, err := os.OpenFile(options.PathFile, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
 	if err != nil {
 		return nil, err
 	}
