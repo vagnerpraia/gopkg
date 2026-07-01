@@ -2,14 +2,15 @@ package gpslog
 
 import (
 	"context"
+	"log"
 	"log/slog"
 	"os"
 	"path/filepath"
 )
 
 type Logging struct {
-	Logger  *slog.Logger
-	Options *LoggingOptions
+	logger  *slog.Logger
+	options *LoggingOptions
 }
 
 func NewLogging(ctx context.Context, options *LoggingOptions) (*Logging, error) {
@@ -27,12 +28,21 @@ func NewLogging(ctx context.Context, options *LoggingOptions) (*Logging, error) 
 		Level: slog.LevelInfo,
 	}
 
-	handler := slog.NewJSONHandler(file, handlerOptions)
-
-	logger := slog.New(handler)
+	logger := slog.New(slog.NewJSONHandler(file, handlerOptions))
 
 	return &Logging{
-		Logger:  logger,
-		Options: options,
+		logger:  logger,
+		options: options,
 	}, nil
+}
+
+func (that *Logging) Info(msg string) {
+
+	if that.options.Print {
+		log.Println(msg)
+	}
+
+	if that.options.WriteFile {
+		that.logger.Info(msg)
+	}
 }
