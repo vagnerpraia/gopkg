@@ -1,4 +1,4 @@
-package logging
+package gpslog
 
 import (
 	"context"
@@ -13,18 +13,16 @@ type Logging struct {
 
 func NewLogging(ctx context.Context, options *LoggingOptions) (*Logging, error) {
 
-	file, err := os.OpenFile(
-		options.PathFile,
-		os.O_CREATE|os.O_APPEND|os.O_WRONLY,
-		0644,
-	)
+	file, err := os.OpenFile(options.PathFile, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {
 		return nil, err
 	}
 
-	handler := slog.NewJSONHandler(file, &slog.HandlerOptions{
+	handlerOptions := &slog.HandlerOptions{
 		Level: slog.LevelInfo,
-	})
+	}
+
+	handler := slog.NewJSONHandler(file, handlerOptions)
 
 	logger := slog.New(handler)
 
