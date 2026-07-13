@@ -52,22 +52,29 @@ func NewClientOptions(filePath string) (*ClientOptions, error) {
 
 func (that *ClientOptions) MongoURI() (string, error) {
 
-	password, err := that.Password()
-	if err != nil {
-		return "", fmt.Errorf("os.Getenv failed: %w", err)
-	}
-
 	u := &url.URL{
 		Scheme: "mongodb",
 		Host:   net.JoinHostPort(that.Host, fmt.Sprintf("%d", that.Port)),
-		Path:   "/" + that.DB,
 	}
 
-	u.User = url.UserPassword(that.User, password)
+	if that.DB != "" {
+		u.Path = "/" + that.DB
+	}
 
-	query := u.Query()
-	query.Set("authSource", that.AuthDB)
-	u.RawQuery = query.Encode()
+	if that.User != "" {
+		password, err := that.Password()
+		if err != nil {
+			return "", fmt.Errorf("os.Getenv failed: %w", err)
+		}
+
+		u.User = url.UserPassword(that.User, password)
+	}
+
+	if that.AuthDB != "" {
+		query := u.Query()
+		query.Set("authSource", that.AuthDB)
+		u.RawQuery = query.Encode()
+	}
 
 	return u.String(), nil
 }
@@ -83,18 +90,6 @@ func (that *ClientOptions) Validate() error {
 	if that.Port < 1 || that.Port > 65535 {
 		errs = append(errs,
 			fmt.Errorf("mongodb.port must be between 1 and 65535 (got %d)", that.Port))
-	}
-
-	if that.DB == "" {
-		errs = append(errs, fmt.Errorf("mongodb.db cannot be empty"))
-	}
-
-	if that.User == "" {
-		errs = append(errs, fmt.Errorf("mongodb.user cannot be empty"))
-	}
-
-	if that.AuthDB == "" {
-		errs = append(errs, fmt.Errorf("mongodb.authDB cannot be empty"))
 	}
 
 	if that.ConnectTimeout <= 0 {
