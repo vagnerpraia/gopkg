@@ -17,12 +17,21 @@ type MongoDB struct {
 
 func NewMongoDB(ctx context.Context, clientOptions *ClientOptions) (*MongoDB, error) {
 
+	if err := clientOptions.Validate(); err != nil {
+		return nil, fmt.Errorf("clientOptions.Validate failed: %w", err)
+	}
+
+	uri, err := clientOptions.MongoURI()
+	if err != nil {
+		return nil, fmt.Errorf("clientOptions.MongoURI failed: %w", err)
+	}
+
 	opts := options.Client().
-		ApplyURI(clientOptions.URI).
+		ApplyURI(uri).
 		SetConnectTimeout(time.Duration(clientOptions.ConnectTimeout) * time.Second).
 		SetMaxConnIdleTime(time.Duration(clientOptions.MaxConnIdleTime) * time.Second).
 		SetMaxPoolSize(clientOptions.MaxPoolSize).
-		SetMinPoolSize(clientOptions.MaxPoolSize).
+		SetMinPoolSize(clientOptions.MinPoolSize).
 		SetServerSelectionTimeout(time.Duration(clientOptions.ServerSelectionTimeout) * time.Second)
 
 	client, err := mongo.Connect(ctx, opts)
@@ -34,11 +43,9 @@ func NewMongoDB(ctx context.Context, clientOptions *ClientOptions) (*MongoDB, er
 		return nil, fmt.Errorf("client.Ping failed: %w", err)
 	}
 
-	database := client.Database(clientOptions.DB)
-
 	mongoDB := MongoDB{
 		Client:   client,
-		Database: database,
+		Database: client.Database(clientOptions.DB),
 	}
 
 	return &mongoDB, nil
