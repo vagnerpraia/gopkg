@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"time"
 
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
+	"go.mongodb.org/mongo-driver/v2/mongo"
+	"go.mongodb.org/mongo-driver/v2/mongo/options"
 )
 
 type MongoDB struct {
@@ -34,7 +34,7 @@ func NewMongoDB(ctx context.Context, clientOptions *ClientOptions) (*MongoDB, er
 		SetMinPoolSize(clientOptions.MinPoolSize).
 		SetServerSelectionTimeout(time.Duration(clientOptions.ServerSelectionTimeout) * time.Second)
 
-	client, err := mongo.Connect(ctx, opts)
+	client, err := mongo.Connect(opts)
 	if err != nil {
 		return nil, fmt.Errorf("mongo.Connect failed: %w", err)
 	}
@@ -70,7 +70,7 @@ func (that *MongoDB) BulkWrite(
 	writes []mongo.WriteModel,
 	retries int,
 	timeout time.Duration,
-	opts *options.BulkWriteOptions,
+	opts options.Lister[options.BulkWriteOptions],
 ) error {
 
 	var err error
