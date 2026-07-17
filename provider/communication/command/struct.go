@@ -5,19 +5,21 @@ import (
 )
 
 type Command struct {
-	Timeout time.Duration
+	timeout time.Duration
+	print   bool
 }
 
-func NewCommand(timeout time.Duration) (*Command, error) {
+func NewCommand(timeout time.Duration, print bool) (*Command, error) {
 
 	return &Command{
-		Timeout: timeout,
+		timeout: timeout,
+		print:   print,
 	}, nil
 }
 
 func (that *Command) Run(command string, args ...string) (*Result, error) {
 
-	return Run(that.Timeout, command, args...)
+	return Run(that.timeout, that.print, command, args...)
 }
 
 func (that *Command) Exists(command string) bool {

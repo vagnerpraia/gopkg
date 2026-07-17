@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-func Run(timeout time.Duration, command string, args ...string) (*Result, error) {
+func Run(timeout time.Duration, print bool, command string, args ...string) (*Result, error) {
 
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
@@ -30,6 +30,10 @@ func Run(timeout time.Duration, command string, args ...string) (*Result, error)
 	result := &Result{
 		Stdout: stdout.String(),
 		Stderr: stderr.String(),
+	}
+
+	if print {
+		result.Print()
 	}
 
 	if err != nil {
