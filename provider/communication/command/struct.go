@@ -1,6 +1,8 @@
 package gpcommand
 
-import "time"
+import (
+	"time"
+)
 
 type Command struct {
 	Timeout time.Duration
@@ -13,7 +15,12 @@ func NewCommand(timeout time.Duration) (*Command, error) {
 	}, nil
 }
 
-func (that *Command) Run(command string) error {
+func (that *Command) Run(command string, args ...string) (*Result, error) {
 
-	return Run(command, that.Timeout)
+	return Run(that.Timeout, command, args...)
+}
+
+func (that *Command) Exists(command string) bool {
+
+	return Exists(command)
 }
