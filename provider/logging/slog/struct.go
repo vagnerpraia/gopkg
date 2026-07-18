@@ -1,7 +1,6 @@
 package gpslog
 
 import (
-	"context"
 	"fmt"
 	"log"
 	"log/slog"
@@ -14,7 +13,7 @@ type Logging struct {
 	options *LoggingOptions
 }
 
-func NewLogging(ctx context.Context, options *LoggingOptions) (*Logging, error) {
+func NewLogging(options *LoggingOptions) (*Logging, error) {
 
 	if err := os.MkdirAll(filepath.Dir(options.PathFile), 0755); err != nil {
 		return nil, err
