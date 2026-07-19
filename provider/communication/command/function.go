@@ -8,12 +8,12 @@ import (
 	"time"
 )
 
-func Run(timeout time.Duration, command string, args ...string) (*Result, error) {
+func Run(ctx context.Context, timeout time.Duration, command string, args ...string) (*Result, error) {
 
-	ctx, cancel := context.WithTimeout(context.Background(), timeout)
+	commandCtx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
 
-	cmd := exec.CommandContext(ctx, command, args...)
+	cmd := exec.CommandContext(commandCtx, command, args...)
 
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
