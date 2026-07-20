@@ -11,9 +11,9 @@ import (
 func Run(ctx context.Context, timeout time.Duration, command string, args ...string) (*Result, error) {
 
 	commandCtx := ctx
-	var cancel context.CancelFunc
 
 	if timeout > 0 {
+		var cancel context.CancelFunc
 		commandCtx, cancel = context.WithTimeout(ctx, timeout)
 		defer cancel()
 	}
