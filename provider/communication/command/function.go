@@ -10,8 +10,13 @@ import (
 
 func Run(ctx context.Context, timeout time.Duration, command string, args ...string) (*Result, error) {
 
-	commandCtx, cancel := context.WithTimeout(context.Background(), timeout)
-	defer cancel()
+	commandCtx := ctx
+	var cancel context.CancelFunc
+
+	if timeout > 0 {
+		commandCtx, cancel = context.WithTimeout(ctx, timeout)
+		defer cancel()
+	}
 
 	cmd := exec.CommandContext(commandCtx, command, args...)
 
