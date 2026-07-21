@@ -64,7 +64,7 @@ func (that *ClientOptions) MongoURI() (string, error) {
 	if that.User != "" {
 		password, err := that.Password()
 		if err != nil {
-			return "", fmt.Errorf("os.Getenv failed: %w", err)
+			return "", fmt.Errorf("that.Password failed: %w", err)
 		}
 
 		u.User = url.UserPassword(that.User, password)
