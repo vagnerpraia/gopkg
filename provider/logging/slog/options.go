@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"reflect"
 
-	gpfile "github.com/vagnerpraia/gopkg/util/file"
+	gpfilesystem "github.com/vagnerpraia/gopkg/util/filesystem"
 )
 
 type BaseOptions struct {
@@ -28,8 +28,8 @@ type LoggingOptions struct {
 func NewLoggingOptions(filePath string) (*LoggingOptions, error) {
 
 	options := &BaseOptions{}
-	if err := gpfile.Unmarshal(filePath, options); err != nil {
-		return nil, fmt.Errorf("unmarshal failed: %w", err)
+	if err := gpfilesystem.Unmarshal(filePath, options); err != nil {
+		return nil, fmt.Errorf("gpfilesystem.Unmarshal failed: %w", err)
 	}
 
 	return &options.Gopkg.Provider.Logging, nil

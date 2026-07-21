@@ -1,4 +1,4 @@
-package gpfile
+package gpfilesystem
 
 import (
 	"os"
