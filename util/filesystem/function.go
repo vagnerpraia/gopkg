@@ -14,7 +14,7 @@ func NormalizePath(str string, os OS) string {
 
 	str = path.Clean(filepath.ToSlash(str))
 
-	if os == Windows {
+	if os.IsWindows() {
 		str = strings.ReplaceAll(str, "/", `\`)
 	}
 

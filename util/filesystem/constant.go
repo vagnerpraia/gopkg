@@ -1,8 +1,41 @@
 package gpfilesystem
 
+import (
+	"errors"
+	"strings"
+)
+
 type OS string
 
 const (
-	Linux   OS = "linux"
-	Windows OS = "windows"
+	osLinuxAlias   = "linux"
+	osWindowsAlias = "windows"
+
+	OSLinux   OS = osLinuxAlias
+	OSWindows OS = osWindowsAlias
 )
+
+func NewOS(str string) (OS, error) {
+
+	str = strings.ToLower(str)
+
+	switch str {
+	case osLinuxAlias:
+		return OSLinux, nil
+
+	case osWindowsAlias:
+		return OSWindows, nil
+	}
+
+	return "", errors.New("os not found")
+}
+
+func (that OS) IsLinux() bool {
+
+	return that == OSLinux
+}
+
+func (that OS) IsWindows() bool {
+
+	return that == OSWindows
+}
