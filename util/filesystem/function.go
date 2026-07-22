@@ -10,7 +10,12 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-func NormalizePath(str string, os OS) string {
+func NormalizePathLocal(str string) string {
+
+	return path.Clean(filepath.ToSlash(str))
+}
+
+func NormalizePathOS(str string, os OS) string {
 
 	str = path.Clean(filepath.ToSlash(str))
 

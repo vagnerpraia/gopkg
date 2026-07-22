@@ -11,7 +11,12 @@ func NewFilesystem(location string, os OS) *Filesystem {
 	}
 }
 
-func (util *Filesystem) NormalizePath(str string, os OS) string {
+func (util *Filesystem) NormalizePathLocal(str string) string {
 
-	return NormalizePath(str, os)
+	return NormalizePathLocal(str)
+}
+
+func (util *Filesystem) NormalizePathOS(str string, os OS) string {
+
+	return NormalizePathOS(str, os)
 }
