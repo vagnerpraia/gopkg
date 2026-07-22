@@ -5,6 +5,7 @@ import (
 	"context"
 	"fmt"
 	"os/exec"
+	"strings"
 	"time"
 )
 
@@ -18,7 +19,9 @@ func Run(ctx context.Context, timeout time.Duration, command string, args ...str
 		defer cancel()
 	}
 
-	cmd := exec.CommandContext(commandCtx, command, args...)
+	commandAdjusted := command + " " + strings.Join(args, " ")
+
+	cmd := exec.CommandContext(commandCtx, commandAdjusted, args...)
 
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer

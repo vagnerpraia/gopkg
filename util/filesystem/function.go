@@ -2,12 +2,24 @@ package gpfilesystem
 
 import (
 	"os"
+	"path"
+	"path/filepath"
 	"strings"
 
-	"gopkg.in/yaml.v3"
-
 	"github.com/mitchellh/mapstructure"
+	"gopkg.in/yaml.v3"
 )
+
+func NormalizePath(str string, os OS) string {
+
+	str = path.Clean(filepath.ToSlash(str))
+
+	if os == Windows {
+		str = strings.ReplaceAll(str, "/", `\`)
+	}
+
+	return str
+}
 
 func Unmarshal(path string, output interface{}) error {
 
