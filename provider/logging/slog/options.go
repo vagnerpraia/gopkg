@@ -23,6 +23,7 @@ type LoggingOptions struct {
 	Print     bool   `yaml:"print"`
 	WriteFile bool   `yaml:"writeFile"`
 	PathFile  string `yaml:"pathFile"`
+	OS        string `yaml:"os"`
 }
 
 func NewLoggingOptions(filePath string) (*LoggingOptions, error) {

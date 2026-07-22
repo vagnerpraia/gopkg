@@ -8,9 +8,11 @@ import (
 type OS string
 
 const (
+	osLocalAlias   = "local"
 	osLinuxAlias   = "linux"
 	osWindowsAlias = "windows"
 
+	OSLocal   OS = osLocalAlias
 	OSLinux   OS = osLinuxAlias
 	OSWindows OS = osWindowsAlias
 )
@@ -20,6 +22,9 @@ func NewOS(str string) (OS, error) {
 	str = strings.ToLower(str)
 
 	switch str {
+	case osLocalAlias:
+		return OSLocal, nil
+
 	case osLinuxAlias:
 		return OSLinux, nil
 
@@ -28,6 +33,11 @@ func NewOS(str string) (OS, error) {
 	}
 
 	return "", errors.New("os not found")
+}
+
+func (that OS) IsLocal() bool {
+
+	return that == OSLocal
 }
 
 func (that OS) IsLinux() bool {

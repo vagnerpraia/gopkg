@@ -10,14 +10,23 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-func NormalizePathLocal(str string) string {
+func NormalizePath(str string) string {
 
 	return path.Clean(filepath.ToSlash(str))
 }
 
+func NormalizePathLocal(str string) string {
+
+	return NormalizePath(str)
+}
+
 func NormalizePathOS(str string, os OS) string {
 
-	str = path.Clean(filepath.ToSlash(str))
+	str = NormalizePath(str)
+
+	if os.IsLocal() {
+		return str
+	}
 
 	if os.IsWindows() {
 		str = strings.ReplaceAll(str, "/", `\`)
