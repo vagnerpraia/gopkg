@@ -3,11 +3,14 @@ package gpcommand
 import "fmt"
 
 type Result struct {
-	Stdout string
-	Stderr string
+	Command string
+	Stdout  string
+	Stderr  string
 }
 
 func (that *Result) Print() {
+
+	fmt.Printf("command %q executed\n", that.Command)
 
 	if that.Stdout != "" {
 		fmt.Println(that.Stdout)

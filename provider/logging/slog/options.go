@@ -33,7 +33,16 @@ func NewLoggingOptions(filePath string) (*LoggingOptions, error) {
 		return nil, fmt.Errorf("gpfilesystem.Unmarshal failed: %w", err)
 	}
 
+	options.normalizeOS()
+
 	return &options.Gopkg.Provider.Logging, nil
+}
+
+func (that *BaseOptions) normalizeOS() {
+
+	if that.Gopkg.Provider.Logging.OS == "" {
+		that.Gopkg.Provider.Logging.OS = "local"
+	}
 }
 
 func (c *LoggingOptions) IsEmpty() bool {
