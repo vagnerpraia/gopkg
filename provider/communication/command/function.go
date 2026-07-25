@@ -6,7 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"os/exec"
-	"strings"
 	"time"
 )
 
@@ -31,25 +30,24 @@ func Run(ctx context.Context, timeout time.Duration, command string, args ...str
 	err := cmd.Run()
 
 	result := &Result{
-		Command: strings.Join(append([]string{command}, args...), " "),
-		Stdout:  stdout.String(),
-		Stderr:  stderr.String(),
+		Stdout: stdout.String(),
+		Stderr: stderr.String(),
 	}
 
 	switch {
 	case errors.Is(commandCtx.Err(), context.DeadlineExceeded):
-		return result, fmt.Errorf("command %q timed out after %s: %w", result.Command, timeout, commandCtx.Err())
+		return result, fmt.Errorf("command %q timed out after %s: %w", command, timeout, commandCtx.Err())
 
 	case errors.Is(commandCtx.Err(), context.Canceled):
-		return result, fmt.Errorf("command %q was canceled: %w", result.Command, commandCtx.Err())
+		return result, fmt.Errorf("command %q was canceled: %w", command, commandCtx.Err())
 	}
 
 	if err != nil {
 		if result.Stderr != "" {
-			return result, fmt.Errorf("command %q failed: %w\nstderr:\n%s", result.Command, err, result.Stderr)
+			return result, fmt.Errorf("command %q failed: %w\nstderr:\n%s", command, err, result.Stderr)
 		}
 
-		return result, fmt.Errorf("command %q failed: %w", result.Command, err)
+		return result, fmt.Errorf("command %q failed: %w", command, err)
 	}
 
 	return result, nil
