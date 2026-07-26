@@ -13,21 +13,21 @@ type Result struct {
 func (that *Result) Print() {
 
 	if that.Stdout != "" {
-		fmt.Println(that.Stdout)
+		fmt.Print(that.Stdout)
 	}
 
 	if that.Stderr != "" {
-		fmt.Println(that.Stderr)
+		fmt.Print(that.Stderr)
 	}
 }
 
 func (that *Result) Log() {
 
 	if that.Stdout != "" {
-		log.Println(that.Stdout)
+		log.Print(that.Stdout)
 	}
 
 	if that.Stderr != "" {
-		log.Println(that.Stderr)
+		log.Print(that.Stderr)
 	}
 }
