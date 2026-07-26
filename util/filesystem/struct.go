@@ -1,10 +1,14 @@
 package gpfilesystem
 
+import (
+	gpenum "github.com/vagnerpraia/gopkg/enum"
+)
+
 type Filesystem struct {
-	OS OS
+	OS gpenum.OS
 }
 
-func NewFilesystem(location string, os OS) *Filesystem {
+func NewFilesystem(location string, os gpenum.OS) *Filesystem {
 
 	return &Filesystem{
 		OS: os,
@@ -21,7 +25,7 @@ func (util *Filesystem) NormalizePathLocal(str string) string {
 	return NormalizePathLocal(str)
 }
 
-func (util *Filesystem) NormalizePathOS(str string, os OS) string {
+func (util *Filesystem) NormalizePathOS(str string, os gpenum.OS) string {
 
 	return NormalizePathOS(str, os)
 }

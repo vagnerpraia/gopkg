@@ -1,4 +1,4 @@
-package gpfilesystem
+package gpenum
 
 import (
 	"errors"

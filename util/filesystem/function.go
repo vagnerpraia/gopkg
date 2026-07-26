@@ -6,6 +6,8 @@ import (
 	"path/filepath"
 	"strings"
 
+	gpenum "github.com/vagnerpraia/gopkg/enum"
+
 	"github.com/mitchellh/mapstructure"
 	"gopkg.in/yaml.v3"
 )
@@ -20,7 +22,7 @@ func NormalizePathLocal(str string) string {
 	return NormalizePath(str)
 }
 
-func NormalizePathOS(str string, os OS) string {
+func NormalizePathOS(str string, os gpenum.OS) string {
 
 	str = NormalizePath(str)
 
