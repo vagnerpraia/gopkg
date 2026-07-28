@@ -35,6 +35,22 @@ func NewOS(str string) (OS, error) {
 	return "", errors.New("os not found")
 }
 
+func (that OS) String() string {
+
+	switch that {
+	case OSLocal:
+		return "local"
+
+	case OSLinux:
+		return "linux"
+
+	case OSWindows:
+		return "windows"
+	}
+
+	return ""
+}
+
 func (that OS) IsLocal() bool {
 
 	return that == OSLocal
