@@ -16,9 +16,9 @@ func NewCommand(timeout time.Duration) (*Command, error) {
 	}, nil
 }
 
-func (that *Command) Run(ctx context.Context, command string, args ...string) (*Result, error) {
+func (that *Command) Run(ctx context.Context, command string, envs []string, args []string) (*Result, error) {
 
-	return Run(ctx, that.timeout, command, args...)
+	return Run(ctx, that.timeout, command, envs, args)
 }
 
 func (that *Command) Exists(command string) bool {

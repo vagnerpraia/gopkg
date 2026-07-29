@@ -5,11 +5,12 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"os"
 	"os/exec"
 	"time"
 )
 
-func Run(ctx context.Context, timeout time.Duration, command string, args ...string) (*Result, error) {
+func Run(ctx context.Context, timeout time.Duration, command string, envs []string, args []string) (*Result, error) {
 
 	commandCtx := ctx
 
@@ -20,6 +21,10 @@ func Run(ctx context.Context, timeout time.Duration, command string, args ...str
 	}
 
 	cmd := exec.CommandContext(commandCtx, command, args...)
+
+	for _, env := range envs {
+		cmd.Env = append(os.Environ(), env)
+	}
 
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
