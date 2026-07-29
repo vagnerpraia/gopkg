@@ -7,6 +7,7 @@ import (
 
 type Command struct {
 	timeout time.Duration
+	envs    []string
 }
 
 func NewCommand(timeout time.Duration) (*Command, error) {
@@ -16,9 +17,14 @@ func NewCommand(timeout time.Duration) (*Command, error) {
 	}, nil
 }
 
-func (that *Command) Run(ctx context.Context, command string, envs []string, args []string) (*Result, error) {
+func (that *Command) SetEnvs(envs []string) {
 
-	return Run(ctx, that.timeout, command, envs, args)
+	that.envs = envs
+}
+
+func (that *Command) Run(ctx context.Context, command string, args []string) (*Result, error) {
+
+	return Run(ctx, that.timeout, command, that.envs, args)
 }
 
 func (that *Command) Exists(command string) bool {
