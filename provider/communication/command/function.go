@@ -22,9 +22,7 @@ func Run(ctx context.Context, timeout time.Duration, command string, envs []stri
 
 	cmd := exec.CommandContext(commandCtx, command, args...)
 
-	for _, env := range envs {
-		cmd.Env = append(os.Environ(), env)
-	}
+	cmd.Env = append(os.Environ(), envs...)
 
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
