@@ -21,44 +21,32 @@ func NewCrypt(hasher hash.Hash) *Crypt {
 
 func NewCryptFNV1a32() *Crypt {
 
-	return &Crypt{
-		hasher: fnv.New32a(),
-	}
+	return NewCrypt(fnv.New32a())
 }
 
 func NewCryptFNV1a64() *Crypt {
 
-	return &Crypt{
-		hasher: fnv.New64a(),
-	}
+	return NewCrypt(fnv.New64a())
 }
 
 func NewCryptFNV1a128() *Crypt {
 
-	return &Crypt{
-		hasher: fnv.New128a(),
-	}
+	return NewCrypt(fnv.New128a())
 }
 
 func NewCryptMD5() *Crypt {
 
-	return &Crypt{
-		hasher: md5.New(),
-	}
+	return NewCrypt(md5.New())
 }
 
 func NewCryptSHA1() *Crypt {
 
-	return &Crypt{
-		hasher: sha1.New(),
-	}
+	return NewCrypt(sha1.New())
 }
 
 func NewCryptSHA256() *Crypt {
 
-	return &Crypt{
-		hasher: sha256.New(),
-	}
+	return NewCrypt(sha256.New())
 }
 
 func (crypt *Crypt) FromInterface(i interface{}) (string, error) {
