@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"reflect"
 
-	gpfilesystem "github.com/vagnerpraia/gopkg/util/filesystem"
+	gpconfig "github.com/vagnerpraia/gopkg/util/config"
 )
 
 type BaseOptions struct {
@@ -29,8 +29,8 @@ type LoggingOptions struct {
 func NewLoggingOptions(filePath string) (*LoggingOptions, error) {
 
 	options := &BaseOptions{}
-	if err := gpfilesystem.Unmarshal(filePath, options); err != nil {
-		return nil, fmt.Errorf("gpfilesystem.Unmarshal failed: %w", err)
+	if err := gpconfig.Unmarshal(filePath, options); err != nil {
+		return nil, fmt.Errorf("gpconfig.Unmarshal failed: %w", err)
 	}
 
 	options.normalizeOS()
