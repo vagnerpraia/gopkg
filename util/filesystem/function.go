@@ -59,7 +59,7 @@ func Subdirectories(finalPath string, relativePath string, os gpenum.OS) ([]stri
 
 	for _, part := range parts {
 		current = filepath.Join(current, part)
-		paths = append(paths, current)
+		paths = append(paths, NormalizePathOS(current, os))
 	}
 
 	return paths, nil
