@@ -19,16 +19,16 @@ type Metadata struct {
 
 func NewMetadata(path string, hasher hash.Hash) (*Metadata, error) {
 
-	info, err := os.Stat(path)
-	if err != nil {
-		return nil, err
-	}
-
 	file, err := os.Open(path)
 	if err != nil {
 		return nil, err
 	}
 	defer file.Close()
+
+	info, err := os.Stat(path)
+	if err != nil {
+		return nil, err
+	}
 
 	if _, err := io.Copy(hasher, file); err != nil {
 		return nil, err
