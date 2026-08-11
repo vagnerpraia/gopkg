@@ -40,7 +40,7 @@ func Subdirectories(finalPath string, relativePath string, os gpenum.OS) ([]stri
 	relativePath = NormalizePathOS(relativePath, os)
 
 	if finalPath == relativePath {
-		return []string{}, nil
+		return []string{finalPath}, nil
 	}
 
 	rel, err := filepath.Rel(relativePath, finalPath)

@@ -43,7 +43,7 @@ func TestSubdirectories(t *testing.T) {
 			name:         "same path",
 			finalPath:    "/dev/shm/insaio/quantos/data",
 			relativePath: "/dev/shm/insaio/quantos/data",
-			want:         []string{},
+			want:         []string{"/dev/shm/insaio/quantos/data"},
 		},
 		{
 			name:         "paths with dot",
