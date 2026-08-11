@@ -15,17 +15,22 @@ func NewFilesystem(location string, os gpenum.OS) *Filesystem {
 	}
 }
 
-func (util *Filesystem) NormalizePath(str string) string {
+func (that *Filesystem) NormalizePath(str string) string {
 
 	return NormalizePath(str)
 }
 
-func (util *Filesystem) NormalizePathLocal(str string) string {
+func (that *Filesystem) NormalizePathLocal(str string) string {
 
 	return NormalizePathLocal(str)
 }
 
-func (util *Filesystem) NormalizePathOS(str string, os gpenum.OS) string {
+func (that *Filesystem) NormalizePathOS(str string) string {
 
-	return NormalizePathOS(str, os)
+	return NormalizePathOS(str, that.OS)
+}
+
+func (that *Filesystem) Subdirectories(finalPath string, relativePath string) ([]string, error) {
+
+	return Subdirectories(finalPath, relativePath, that.OS)
 }
