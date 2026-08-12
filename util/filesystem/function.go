@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"path"
 	"path/filepath"
+	"slices"
 	"strings"
 
 	gpenum "github.com/vagnerpraia/gopkg/enum"
@@ -63,4 +64,30 @@ func Subdirectories(finalPath string, relativePath string, os gpenum.OS) ([]stri
 	}
 
 	return paths, nil
+}
+
+func ParentDirs(path string, os gpenum.OS) []string {
+
+	path = filepath.Clean(path)
+
+	dirs := []string{}
+
+	separator := "/"
+	if os.IsWindows() {
+		separator = `\`
+	}
+
+	for dir := filepath.Dir(path); dir != separator && dir != "."; dir = filepath.Dir(dir) {
+		dir = NormalizePathOS(dir, os)
+
+		dirs = append(dirs, dir)
+
+		if dir == filepath.Dir(dir) {
+			break
+		}
+	}
+
+	slices.Reverse(dirs)
+
+	return dirs
 }

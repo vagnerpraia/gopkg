@@ -34,3 +34,8 @@ func (that *Filesystem) Subdirectories(finalPath string, relativePath string) ([
 
 	return Subdirectories(finalPath, relativePath, that.OS)
 }
+
+func (that *Filesystem) ParentDirs(path string) []string {
+
+	return ParentDirs(path, that.OS)
+}
