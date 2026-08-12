@@ -39,3 +39,8 @@ func (that *Filesystem) ParentDirs(path string) []string {
 
 	return ParentDirs(path, that.OS)
 }
+
+func (that *Filesystem) IsWithin(path string, root string) bool {
+
+	return IsWithin(path, root, that.OS)
+}

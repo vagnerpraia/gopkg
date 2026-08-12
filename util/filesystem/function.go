@@ -91,3 +91,21 @@ func ParentDirs(path string, os gpenum.OS) []string {
 
 	return dirs
 }
+
+func IsWithin(path string, root string, os gpenum.OS) bool {
+
+	path = NormalizePathOS(path, os)
+	root = NormalizePathOS(root, os)
+
+	if path == root {
+		return false
+	}
+
+	if os.IsWindows() {
+		root += "\\"
+	} else {
+		root += "/"
+	}
+
+	return strings.HasPrefix(path, root)
+}
