@@ -68,23 +68,19 @@ func Subdirectories(finalPath string, relativePath string, os gpenum.OS) ([]stri
 
 func ParentDirs(path string, os gpenum.OS) []string {
 
-	path = filepath.Clean(path)
+	path = NormalizePathOS(path, os)
 
 	dirs := []string{}
 
-	separator := "/"
-	if os.IsWindows() {
-		separator = `\`
-	}
-
-	for dir := filepath.Dir(path); dir != separator && dir != "."; dir = filepath.Dir(dir) {
-		dir = NormalizePathOS(dir, os)
-
-		dirs = append(dirs, dir)
-
+	for dir := filepath.Dir(path); dir != path; {
 		if dir == filepath.Dir(dir) {
 			break
 		}
+
+		dirs = append(dirs, NormalizePathOS(dir, os))
+
+		path = dir
+		dir = filepath.Dir(path)
 	}
 
 	slices.Reverse(dirs)
