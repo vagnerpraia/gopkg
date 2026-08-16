@@ -19,3 +19,13 @@ func Now(loc string, layout string) (*time.Time, error) {
 
 	return &now, nil
 }
+
+func String(loc string, layout string) (string, error) {
+
+	timer, err := Now(loc, layout)
+	if err != nil {
+		return "", err
+	}
+
+	return timer.Format(layout), nil
+}

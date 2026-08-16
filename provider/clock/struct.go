@@ -28,7 +28,12 @@ func NewClockAmericaSaoPaulo() *Clock {
 	}
 }
 
-func (clock *Clock) Now() (*time.Time, error) {
+func (that *Clock) Now() (*time.Time, error) {
 
-	return Now(clock.location, clock.layout)
+	return Now(that.location, that.layout)
+}
+
+func (that *Clock) String() (string, error) {
+
+	return String(that.location, that.layout)
 }
