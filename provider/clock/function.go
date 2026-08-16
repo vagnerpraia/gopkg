@@ -2,6 +2,7 @@ package gpclock
 
 import (
 	"time"
+	_ "time/tzdata"
 )
 
 func Now(loc string, layout string) (*time.Time, error) {
@@ -11,8 +12,7 @@ func Now(loc string, layout string) (*time.Time, error) {
 		return nil, err
 	}
 
-	t := time.Now().In(location).Format(layout)
-	now, err := time.Parse(layout, t)
+	now, err := time.Parse(layout, time.Now().In(location).Format(layout))
 	if err != nil {
 		return nil, err
 	}
