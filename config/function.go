@@ -1,11 +1,31 @@
 package gpconfig
 
 import (
+	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"gopkg.in/yaml.v3"
 )
+
+func Write(path string, value any) error {
+
+	data, err := yaml.Marshal(value)
+	if err != nil {
+		return fmt.Errorf("marshal: %w", err)
+	}
+
+	if err := os.MkdirAll(filepath.Dir(path), 0755); err != nil {
+		return fmt.Errorf("create directory: %w", err)
+	}
+
+	if err := os.WriteFile(path, data, 0644); err != nil {
+		return fmt.Errorf("write file: %w", err)
+	}
+
+	return nil
+}
 
 func Unmarshal(path string, output any) error {
 

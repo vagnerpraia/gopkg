@@ -8,7 +8,7 @@ import (
 	"os"
 	"reflect"
 
-	gpconfig "github.com/vagnerpraia/gopkg/util/config"
+	gpconfig "github.com/vagnerpraia/gopkg/config"
 )
 
 type BaseOptions struct {
