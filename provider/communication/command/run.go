@@ -4,25 +4,23 @@ import (
 	"bytes"
 	"context"
 	"errors"
-	"fmt"
 	"os"
 	"os/exec"
-	"time"
 )
 
-func Run(ctx context.Context, timeout time.Duration, command string, envs []string, args []string) (*Result, error) {
+func (that *Client) Run(ctx context.Context, command string, args []string) (*Result, error) {
 
 	commandCtx := ctx
 
-	if timeout > 0 {
+	if that.config.Timeout > 0 {
 		var cancel context.CancelFunc
-		commandCtx, cancel = context.WithTimeout(ctx, timeout)
+		commandCtx, cancel = context.WithTimeout(ctx, that.config.Timeout)
 		defer cancel()
 	}
 
 	cmd := exec.CommandContext(commandCtx, command, args...)
 
-	cmd.Env = append(os.Environ(), envs...)
+	cmd.Env = append(os.Environ(), that.envs...)
 
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
@@ -39,24 +37,24 @@ func Run(ctx context.Context, timeout time.Duration, command string, envs []stri
 
 	switch {
 	case errors.Is(commandCtx.Err(), context.DeadlineExceeded):
-		return result, fmt.Errorf("command %q timed out after %s: %w", command, timeout, commandCtx.Err())
+		return result, err
 
 	case errors.Is(commandCtx.Err(), context.Canceled):
-		return result, fmt.Errorf("command %q was canceled: %w", command, commandCtx.Err())
+		return result, err
 	}
 
 	if err != nil {
 		if result.Stderr != "" {
-			return result, fmt.Errorf("command %q failed: %w\nstderr:\n%s", command, err, result.Stderr)
+			return result, err
 		}
 
-		return result, fmt.Errorf("command %q failed: %w", command, err)
+		return result, err
 	}
 
 	return result, nil
 }
 
-func Exists(command string) bool {
+func (that *Client) Exists(command string) bool {
 
 	_, err := exec.LookPath(command)
 
