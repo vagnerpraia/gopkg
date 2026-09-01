@@ -16,6 +16,11 @@ func NewClient(config *Config) (*Client, error) {
 	}, nil
 }
 
+func (that *Client) Verbose() bool {
+
+	return that.config.Verbose
+}
+
 func (that *Client) SetEnvs(envs []string) {
 
 	that.envs = envs
