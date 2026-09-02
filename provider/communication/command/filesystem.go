@@ -34,6 +34,15 @@ func (that *Client) CreateDir(ctx context.Context, path string) error {
 		return err
 	}
 
+	if err := that.SetOwnerAndPermissions(ctx, path); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (that *Client) SetOwnerAndPermissions(ctx context.Context, path string) error {
+
 	if err := that.Chown(ctx, path); err != nil {
 		return err
 	}
@@ -55,6 +64,10 @@ func (that *Client) DeployDir(ctx context.Context, path string) error {
 
 		if !exists {
 			if err := that.CreateDir(ctx, p); err != nil {
+				return err
+			}
+		} else {
+			if err := that.SetOwnerAndPermissions(ctx, path); err != nil {
 				return err
 			}
 		}
