@@ -66,12 +66,20 @@ func (that Delimiter) Pair() string {
 
 func (that Delimiter) Open() byte {
 
-	return that.Pair()[0]
+	if len(that.Pair()) >= 2 {
+		return that.Pair()[0]
+	}
+
+	return 0
 }
 
 func (that Delimiter) Close() byte {
 
-	return that.Pair()[1]
+	if len(that.Pair()) >= 2 {
+		return that.Pair()[1]
+	}
+
+	return 0
 }
 
 func (that Delimiter) IsCurlyBrackets() bool {
