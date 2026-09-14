@@ -44,3 +44,8 @@ func (that *Filesystem) IsWithin(path string, root string) bool {
 
 	return IsWithin(path, root, that.OS)
 }
+
+func (that *Filesystem) LastDirectories(path string, n int) (string, error) {
+
+	return LastDirectories(path, n)
+}

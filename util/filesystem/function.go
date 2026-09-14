@@ -105,3 +105,18 @@ func IsWithin(path string, root string, os gpenum.OS) bool {
 
 	return strings.HasPrefix(path, root)
 }
+
+func LastDirectories(path string, n int) (string, error) {
+
+	path = filepath.Dir(filepath.Clean(path))
+
+	parts := strings.Split(path, string(filepath.Separator))
+
+	if len(parts) < n {
+		return "", fmt.Errorf("path has fewer than %d directories: %s", n, path)
+	}
+
+	parts = parts[len(parts)-n:]
+
+	return filepath.Join(parts...), nil
+}
