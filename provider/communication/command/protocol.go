@@ -14,14 +14,14 @@ func (that *Client) SSH(ctx context.Context, host string, command string) error 
 	return nil
 }
 
-func (that *Client) SCP(ctx context.Context, args ...string) error {
+func (that *Client) SCP(ctx context.Context, args ...string) (*Result, error) {
 
-	_, err := that.RunRemote(ctx, "scp", args)
+	result, err := that.RunRemote(ctx, "scp", args)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	return nil
+	return result, nil
 }
 
 func (that *Client) Git(ctx context.Context, args ...string) (*Result, error) {
