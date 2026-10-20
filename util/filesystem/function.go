@@ -108,7 +108,11 @@ func IsWithin(path string, root string, os gpenum.OS) bool {
 
 func LastDirectories(path string, n int) (string, error) {
 
-	path = filepath.Dir(filepath.Clean(path))
+	fmt.Printf("path: %v\n", path)
+
+	clean := filepath.Clean(path)
+
+	fmt.Printf("clean: %v\n", clean)
 
 	parts := strings.Split(path, string(filepath.Separator))
 
@@ -117,6 +121,8 @@ func LastDirectories(path string, n int) (string, error) {
 	}
 
 	parts = parts[len(parts)-n:]
+
+	fmt.Printf("parts: %v\n", filepath.Join(parts...))
 
 	return filepath.Join(parts...), nil
 }
