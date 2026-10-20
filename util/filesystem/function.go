@@ -116,7 +116,5 @@ func LastDirectories(path string, n int) (string, error) {
 
 	parts = parts[len(parts)-n:]
 
-	fmt.Printf("parts: %v\n", filepath.Join(parts...))
-
 	return filepath.Join(parts...), nil
 }
