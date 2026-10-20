@@ -108,13 +108,7 @@ func IsWithin(path string, root string, os gpenum.OS) bool {
 
 func LastDirectories(path string, n int) (string, error) {
 
-	fmt.Printf("path: %v\n", path)
-
-	clean := filepath.Clean(path)
-
-	fmt.Printf("clean: %v\n", clean)
-
-	parts := strings.Split(path, string(filepath.Separator))
+	parts := strings.Split(filepath.Clean(path), string(filepath.Separator))
 
 	if len(parts) < n {
 		return "", fmt.Errorf("path has fewer than %d directories: %s", n, path)
