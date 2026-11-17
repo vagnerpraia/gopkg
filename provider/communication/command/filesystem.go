@@ -56,6 +56,8 @@ func (that *Client) SetOwnerAndPermissions(ctx context.Context, path string) err
 
 func (that *Client) DeployDir(ctx context.Context, path string) error {
 
+	lastPath := path
+
 	for _, parentDir := range gpfilesystem.ParentDirs(path, that.config.OS) {
 		exists, err := that.ExistsDir(ctx, parentDir)
 		if err != nil {
@@ -67,9 +69,11 @@ func (that *Client) DeployDir(ctx context.Context, path string) error {
 				return err
 			}
 		}
+
+		lastPath = parentDir
 	}
 
-	if err := that.SetOwnerAndPermissions(ctx, path); err != nil {
+	if err := that.SetOwnerAndPermissions(ctx, lastPath); err != nil {
 		return err
 	}
 
