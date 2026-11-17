@@ -7,11 +7,12 @@ import (
 )
 
 type Config struct {
-	Host    Host
-	User    User
-	Timeout time.Duration
-	OS      gpenum.OS
-	Verbose bool
+	Host              Host
+	User              User
+	SetRecursiveOwner bool
+	Timeout           time.Duration
+	OS                gpenum.OS
+	Verbose           bool
 }
 
 type User struct {
@@ -25,14 +26,15 @@ type Host struct {
 	Port    string
 }
 
-func NewConfig(host Host, user User, timeout time.Duration, os gpenum.OS, verbose bool) *Config {
+func NewConfig(host Host, user User, setRecursiveOwner bool, timeout time.Duration, os gpenum.OS, verbose bool) *Config {
 
 	return &Config{
-		Host:    host,
-		User:    user,
-		Timeout: timeout,
-		OS:      os,
-		Verbose: verbose,
+		Host:              host,
+		User:              user,
+		SetRecursiveOwner: setRecursiveOwner,
+		Timeout:           timeout,
+		OS:                os,
+		Verbose:           verbose,
 	}
 }
 

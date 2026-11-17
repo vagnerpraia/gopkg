@@ -66,11 +66,11 @@ func (that *Client) DeployDir(ctx context.Context, path string) error {
 			if err := that.CreateDir(ctx, parentDir); err != nil {
 				return err
 			}
-		} else {
-			if err := that.SetOwnerAndPermissions(ctx, parentDir); err != nil {
-				return err
-			}
 		}
+	}
+
+	if err := that.SetOwnerAndPermissions(ctx, path); err != nil {
+		return err
 	}
 
 	return nil
@@ -83,7 +83,15 @@ func (that *Client) Mkdir(ctx context.Context, path string) error {
 
 func (that *Client) Chown(ctx context.Context, path string) error {
 
-	return that.SSH(ctx, that.config.Host.Name, fmt.Sprintf("sudo chown -R %s:%s %s", that.config.User.Owner, that.config.User.Group, path))
+	command := "sudo chown "
+
+	if that.config.SetRecursiveOwner {
+		command += "-R "
+	}
+
+	command += "%s:%s %s"
+
+	return that.SSH(ctx, that.config.Host.Name, fmt.Sprintf(command, that.config.User.Owner, that.config.User.Group, path))
 }
 
 func (that *Client) Chmod(ctx context.Context, path string, permission string) error {
