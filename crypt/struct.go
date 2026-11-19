@@ -54,9 +54,19 @@ func (crypt *Crypt) FromInterface(i interface{}) (string, error) {
 	return FromInterface(crypt.hasher, i)
 }
 
-func (crypt *Crypt) FromInterfaces(i ...interface{}) (string, error) {
+func (crypt *Crypt) Base64FromInterfaces(i ...interface{}) (string, error) {
 
-	return FromInterfaces(crypt.hasher, i)
+	return Base64FromInterfaces(crypt.hasher, i)
+}
+
+func (crypt *Crypt) Base32FromInterfaces(i ...interface{}) (string, error) {
+
+	return Base32FromInterfaces(crypt.hasher, i)
+}
+
+func (crypt *Crypt) HexFromInterfaces(i ...interface{}) (string, error) {
+
+	return HexFromInterfaces(crypt.hasher, i)
 }
 
 func (crypt *Crypt) FromString(str string) (string, error) {

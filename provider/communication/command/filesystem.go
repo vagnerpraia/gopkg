@@ -9,9 +9,9 @@ import (
 	gpfilesystem "github.com/vagnerpraia/gopkg/util/filesystem"
 )
 
-func (that *Client) ExistsDir(ctx context.Context, path string) (bool, error) {
+func (that *Client) ExistsDir(ctx context.Context, dir string) (bool, error) {
 
-	err := that.SSH(ctx, that.config.Host.Name, fmt.Sprintf("test -d %s", path))
+	err := that.SSH(ctx, that.config.Host.Name, fmt.Sprintf("test -d %s", dir))
 	if err == nil {
 		return true, nil
 	}
@@ -28,37 +28,37 @@ func (that *Client) ExistsDir(ctx context.Context, path string) (bool, error) {
 	return false, err
 }
 
-func (that *Client) CreateDir(ctx context.Context, path string) error {
+func (that *Client) CreateDir(ctx context.Context, dir string) error {
 
-	if err := that.Mkdir(ctx, path); err != nil {
+	if err := that.Mkdir(ctx, dir); err != nil {
 		return err
 	}
 
-	if err := that.SetOwnerAndPermissions(ctx, path); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (that *Client) SetOwnerAndPermissions(ctx context.Context, path string) error {
-
-	if err := that.Chown(ctx, path); err != nil {
-		return err
-	}
-
-	if err := that.Chmod(ctx, path, "755"); err != nil {
+	if err := that.SetOwnerAndPermissions(ctx, dir); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (that *Client) DeployDir(ctx context.Context, path string) error {
+func (that *Client) SetOwnerAndPermissions(ctx context.Context, dir string) error {
 
-	lastPath := path
+	if err := that.Chown(ctx, dir); err != nil {
+		return err
+	}
 
-	for _, parentDir := range gpfilesystem.ParentDirs(path, that.config.OS) {
+	if err := that.Chmod(ctx, dir, "755"); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (that *Client) DeployDir(ctx context.Context, dir string) error {
+
+	lastDir := dir
+
+	for _, parentDir := range gpfilesystem.ParentDirs(dir, that.config.OS) {
 		exists, err := that.ExistsDir(ctx, parentDir)
 		if err != nil {
 			return err
@@ -70,22 +70,22 @@ func (that *Client) DeployDir(ctx context.Context, path string) error {
 			}
 		}
 
-		lastPath = parentDir
+		lastDir = parentDir
 	}
 
-	if err := that.SetOwnerAndPermissions(ctx, lastPath); err != nil {
+	if err := that.SetOwnerAndPermissions(ctx, lastDir); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (that *Client) Mkdir(ctx context.Context, path string) error {
+func (that *Client) Mkdir(ctx context.Context, dir string) error {
 
-	return that.SSH(ctx, that.config.Host.Name, fmt.Sprintf("sudo mkdir -p %s", path))
+	return that.SSH(ctx, that.config.Host.Name, fmt.Sprintf("sudo mkdir -p %s", dir))
 }
 
-func (that *Client) Chown(ctx context.Context, path string) error {
+func (that *Client) Chown(ctx context.Context, dir string) error {
 
 	command := "sudo chown "
 
@@ -95,20 +95,20 @@ func (that *Client) Chown(ctx context.Context, path string) error {
 
 	command += "%s:%s %s"
 
-	return that.SSH(ctx, that.config.Host.Name, fmt.Sprintf(command, that.config.User.Owner, that.config.User.Group, path))
+	return that.SSH(ctx, that.config.Host.Name, fmt.Sprintf(command, that.config.User.Owner, that.config.User.Group, dir))
 }
 
-func (that *Client) Chmod(ctx context.Context, path string, permission string) error {
+func (that *Client) Chmod(ctx context.Context, dir string, permission string) error {
 
-	return that.SSH(ctx, that.config.Host.Name, fmt.Sprintf("sudo chmod %s %s", permission, path))
+	return that.SSH(ctx, that.config.Host.Name, fmt.Sprintf("sudo chmod %s %s", permission, dir))
 }
 
-func (that *Client) Rm(ctx context.Context, path string) error {
+func (that *Client) Rm(ctx context.Context, dir string) error {
 
-	return that.SSH(ctx, that.config.Host.Name, fmt.Sprintf("rm -- %s", path))
+	return that.SSH(ctx, that.config.Host.Name, fmt.Sprintf("rm -- %s", dir))
 }
 
-func (that *Client) Cleanup(ctx context.Context, path string) error {
+func (that *Client) Cleanup(ctx context.Context, dir string) error {
 
-	return that.SSH(ctx, that.config.Host.Name, fmt.Sprintf("rm -rf -- %s/*", path))
+	return that.SSH(ctx, that.config.Host.Name, fmt.Sprintf("rm -rf -- %s/*", dir))
 }
