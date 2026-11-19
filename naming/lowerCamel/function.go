@@ -1,4 +1,4 @@
-package gplowercamelcase
+package gplowercamel
 
 import (
 	"strings"
@@ -47,7 +47,7 @@ func ToWords(value string) string {
 	return result.String()
 }
 
-func FromKebabCase(value string) string {
+func FromKebab(value string) string {
 
 	var result strings.Builder
 

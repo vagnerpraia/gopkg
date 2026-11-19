@@ -1,4 +1,4 @@
-package gpkebabcase
+package gpkebab
 
 import (
 	"strings"
@@ -35,7 +35,7 @@ func ToWords(value string) string {
 	return strings.Join(words, " ")
 }
 
-func FromLowerCamelCase(value string) string {
+func FromLowerCamel(value string) string {
 
 	var result strings.Builder
 
